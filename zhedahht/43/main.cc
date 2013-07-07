@@ -65,10 +65,45 @@ void PrintSumProbabilityOfDices_1(int number)
     SumProbabilityOfDices(number, pp);
 
     int total = pow((float)g_max_value, number);
-    for (int i = number; i < max_sum; i++) {
+    for (int i = number; i <= max_sum; i++) {
         float ratio = (float)pp[i - number] / total;
         printf("%d: %f [%d]\n", i, ratio, pp[i - number]);
     }
+}
+
+void PrintSumProbabilityOfDices_2(int number) 
+{
+    int* pp[2];
+    pp[0] = new int[g_max_value * number + 1];
+    pp[1] = new int[g_max_value * number + 1];
+    for (int i = 0; i < g_max_value * number + 1; i++) {
+        pp[0][i] = 0;
+        pp[1][i] = 0;
+    }
+
+    int flag = 0;
+    for (int i = 1; i <= g_max_value; i++) {
+        pp[flag][i] = 1;
+    }
+
+    for (int k = 2; k <= number; k++) {
+        for (int i = k; i <= g_max_value * k; i++) {
+            pp[1 - flag][i] = 0;
+            for (int j = 1; i - j >= k - 1 && j <= g_max_value; j++) {
+                pp[1 - flag][i] += pp[flag][i - j];
+            }
+        }
+        flag = 1 - flag;
+    }
+
+    double total = pow((double)g_max_value, number);
+    for (int i = number; i <= g_max_value * number; i++) {
+        double ratio = pp[flag][i] / total;
+        printf("%d: %f [%d]\n", i, ratio, pp[flag][i]);
+    }
+
+    delete[] pp[0];
+    delete[] pp[1];
 }
 
 void usage(char* program) 
@@ -96,7 +131,7 @@ int main(int argc, char* argv[])
             PrintSumProbabilityOfDices_1(number);
             break;
         case 2:
-            printf("algrighom2 is not realized.\n");
+            PrintSumProbabilityOfDices_2(number);
             break;
         default:
             usage(argv[0]);
