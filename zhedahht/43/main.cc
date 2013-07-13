@@ -76,12 +76,15 @@ void PrintSumProbabilityOfDices_2(int number)
     int* pp[2];
     pp[0] = new int[g_max_value * number + 1];
     pp[1] = new int[g_max_value * number + 1];
+    // Initialize all to zero
     for (int i = 0; i < g_max_value * number + 1; i++) {
         pp[0][i] = 0;
         pp[1][i] = 0;
     }
 
     int flag = 0;
+    // 初始化第一轮点数
+    // Initialize the value of the first round
     for (int i = 1; i <= g_max_value; i++) {
         pp[flag][i] = 1;
     }
@@ -89,7 +92,18 @@ void PrintSumProbabilityOfDices_2(int number)
     for (int k = 2; k <= number; k++) {
         for (int i = k; i <= g_max_value * k; i++) {
             pp[1 - flag][i] = 0;
+
+            // i - j要不小于上轮的最小值(k - 1)
+            // i - j should be not smaller than last round's minimum value(k - 1)
             for (int j = 1; i - j >= k - 1 && j <= g_max_value; j++) {
+                // i - j要不大于上轮的最大值((k - 1) * g_max_value)
+                // i - j should be not larger than last round's maximum value((k - 1) * g_max_value)
+                if (i - j > (k - 1) * g_max_value) {
+                    printf("oops, %d\n", pp[flag][i - 1]);
+                    continue;
+                }
+                // 由于本次的骰子由六种数字，所以本次第为i的点数由上次的
+                // i - 1, i - 2, i - 3, i - 4, i - 5, i - 6组成
                 pp[1 - flag][i] += pp[flag][i - j];
             }
         }
