@@ -29,15 +29,21 @@ void PrintNumber(char* number)
     int length = strlen(number);
 
     for (int i = 0; i < length; i++) {
-        if (is_beginning0 && number[i] == '0') {
-            continue;
+        if (is_beginning0) {
+            if (number[i] == '0') {
+                continue;
+            }
+            else {
+                is_beginning0 = false;
+            }
         }
-        else {
-            printf("%c", number[i]);
-        }
+        
+        printf("%c", number[i]);
     }
 
-    printf("\t");
+    if (!is_beginning0) {
+        printf("\t");
+    }
 }
 
 /*
@@ -139,6 +145,8 @@ void Print1ToMaxOfNDigits3(int n)
 
         Print1ToMaxOfNDigitsRecursively(number, n, 0);
     }
+
+    printf("\n");
 
     delete[] number;
 }
