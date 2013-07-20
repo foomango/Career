@@ -2,11 +2,11 @@ CXX := g++
 CXXFLAGS := -g
 LDFLAGS := 
 
-TARGETS := $(shell ls *.cc | tr '\n' ' ' |tr -d '.cc')
+TARGETS := $(shell ls *.cc | tr '\n' ' ' |sed 's/\.cc/\.elf/')
 
 all: $(TARGETS)
 
-$(TARGETS): %: %.o
+%.elf: %.o
 	$(CXX) -o $@ $< $(CXXFLAGS) $(LDFLAGS)
 
 %.o: %.cc
