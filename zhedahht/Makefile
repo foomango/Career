@@ -2,7 +2,7 @@ CXX := g++
 CXXFLAGS := -g
 LDFLAGS := 
 
-TARGETS := $(shell ls *.cc | tr '\n' ' ' |sed 's/\.cc/\.elf/')
+TARGETS := $(shell ls *.cc | tr '\n' ' ' |sed 's/\.cc/\.elf/g')
 
 all: $(TARGETS)
 
