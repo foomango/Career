@@ -61,7 +61,7 @@ void Combination(const char* string, TraverseFn fn)
     }
 }
 
-void Traverse(const vector<char>& data) 
+void PrintVectorOfString(const vector<char>& data) 
 {
     for (vector<char>::const_iterator iter = data.begin(); 
             iter != data.end(); ++iter) {
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
-    Combination(argv[1], Traverse);
+    Combination(argv[1], PrintVectorOfString);
     printf("\n");
 
     return 0;
