@@ -51,7 +51,7 @@ void Combination1(const char* string)
 
 void Test1() 
 {
-    const char* string = "abc";
+    const char* string = "abcd";
     Combination1(string);
 }
 
@@ -86,7 +86,7 @@ void Combination2(const char* string)
 
 void Test2() 
 {
-    const char* string = "abc";
+    const char* string = "abcd";
     Combination2(string);
 }
 
