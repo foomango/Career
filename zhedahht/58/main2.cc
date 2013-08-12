@@ -103,7 +103,7 @@ void Permutation(int column_index[], int length, int index) {
 
 void EightQueens() 
 {
-    const int queens = 13;
+    const int queens = 8;
     int column_index[queens];
     for (int i = 0; i < queens; i++) {
         column_index[i] = i;
