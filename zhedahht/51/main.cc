@@ -85,6 +85,8 @@ void Test1()
     }
     PrintMatrixClockwisely((int**)numbers, columns, rows);
     std::cout << std::endl;
+
+    delete [] numbers;
 }
 
 int main(int argc, char* argv[]) 
