@@ -1,13 +1,13 @@
 CXX := g++
-CXXFLAGS += -g -I../../common
-LDFLAGS += 
+CXXFLAGS := -g -I../../common
+LDFLAGS := ../../common/tree.o
 
-TARGETS := main main2
+TARGETS := $(shell ls *.cc | tr '\n' ' ' |sed 's/\.cc/\.elf/g')
 
 all: $(TARGETS)
 
-$(TARGETS): %: %.o ../../common/tree.o
-	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
+%.elf: %.o
+	$(CXX) -o $@ $< $(CXXFLAGS) $(LDFLAGS)
 
 %.o: %.cc
 	$(CXX) -c -o $@ $< $(CXXFLAGS)

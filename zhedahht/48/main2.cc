@@ -1,68 +1,124 @@
-// =====================================================================================
-// 
-//       Filename:  main2.cc
-// 
-//    Description:  
-// 
-//        Version:  1.0
-//        Created:  05/06/2013 09:45:55 PM
-//       Revision:  none
-//       Compiler:  g++
-// 
-//         Author:  WangFengwei (mn), foomango@gmail.com
-//        Company:  HUAZHONG UNIVERSITY OF SCIENCE AND TECHNOLOGY
-// 
-// =====================================================================================
+/*
+ * =====================================================================================
+ *
+ *       Filename:  main2.cc
+ *
+ *    Description:  http://foomango.blog.163.com/blog/static/218098074201372385412876/
+ *
+ *        Version:  1.0
+ *        Created:  08/23/2013 08:57:52 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  WangFengwei (mn), foomango@gmail.com
+ *        Company:  HUAZHONG UNIVERSITY OF SCIENCE AND TECHNOLOGY
+ *
+ * =====================================================================================
+ */
 
 #include <iostream>
+#include <list>
 
 #include <include/tree.h>
 
-/**
- * Get the path from pHead to pNode in a tree with head pHead
- **/
-bool GetNodePath(TreeNode *pHead, TreeNode *pNode, std::list<TreeNode *>& path) 
+using namespace std;
+
+bool GetNodePath(TreeNode *head, TreeNode *node, list<TreeNode*> &path) 
 {
-    if (pHead == pNode) {
+    if (head == node) {
         return true;
     }
 
-    bool result = false;
-    path.push_back(pHead);
-    if (!pNode->m_pLeft) {
-        result = GetNodePath(pHead->m_pLeft, pNode, path);
+    path.push_back(head);
+    
+    bool found = false;
+    if (head->m_pLeft != NULL) {
+        found = GetNodePath(head->m_pLeft, node, path);
     }
-    if (!result && pNode->m_pRight) {
-        result = GetNodePath(pHead->m_pRight, pNode, path);
+    
+    if (!found && head->m_pRight != NULL) {
+        found = GetNodePath(head->m_pRight, node, path);
     }
-    if (!result) {
-        path.pop_back(pHead);
+
+    if (!found) {
+        path.pop_back();
+    }
+
+    return found;
+}
+
+TreeNode* LastCommonNode(list<TreeNode*> &path1, list<TreeNode*> &path2) 
+{
+    list<TreeNode*>::iterator iter1 = path1.begin();
+    list<TreeNode*>::iterator iter2 = path2.begin();
+
+    TreeNode *result = NULL;
+
+    while (iter1 != path1.end() && iter2 != path2.end()) {
+        if (*iter1 == *iter2) {
+            result = *iter1;
+        }
+        else {
+            break;
+        }
+        ++iter1;
+        ++iter2;
     }
 
     return result;
 }
 
-/**
- * Get the last common Node in two lists: path1 and path2
- **/
-TreeNode* LastCommonNode(
-        const std::list<TreeNode *>& path1, 
-        const std::list<TreeNode *>& path2)
+TreeNode* LastCommonParent(TreeNode* head, TreeNode* tree1, TreeNode* tree2) 
 {
-    std::list<TreeNode *>::const_iterator iterator1 = path1.begin();
-    std::list<TreeNode *>::const_iterator iterator2 = path2.begin();
+    list<TreeNode*> path1;
+    list<TreeNode*> path2;
 
-    TreeNode* pLast = NULL;
-
-    while (iterator1 != path1.end() && iterator2 != path2.end()) {
-        if (*iterator1 != *iterator2) {
-            break;
-        } else {
-            pLast = *iterator1;
-            iterator1++;
-            iterator2++;
-        }
+    if (head == NULL || tree1 == NULL || tree2 == NULL) {
+        return NULL;
     }
 
-    return pLast;
+    GetNodePath(head, tree1, path1);
+    GetNodePath(head, tree2, path2);
+
+    return LastCommonNode(path1, path2);
+
+}
+
+TreeNode* GetNodeFromValue(TreeNode* pHead, int value) 
+{
+    if (!pHead) {
+            return NULL;
+        }   
+
+    if (pHead->m_nValue == value) {
+            return pHead;
+        }   
+
+    TreeNode* result = NULL;
+    if (pHead->m_pLeft) {
+            result = GetNodeFromValue(pHead->m_pLeft, value);
+        }   
+    if (!result && pHead->m_pRight) {
+            result = GetNodeFromValue(pHead->m_pRight, value);
+        }   
+
+    return result;
+}
+
+int main(int argc, char *argv[]) 
+{
+    TreeNode* pHead = GenTree();
+    if (!pHead) {
+        return -1;
+    }
+
+    TreeNode* last_common_parent = LastCommonParent(pHead, GetNodeFromValue(pHead, 200), GetNodeFromValue(pHead, 300));
+    if (last_common_parent != NULL) {
+        cout << last_common_parent->m_nValue << endl;
+    }
+    else {
+        cout << "Not found" << endl;
+    }
+
+    return 0;
 }

@@ -6,3 +6,6 @@
 cscope.*
 *~
 a.out
+
+apue/apue.2e/file/bar
+apue/apue.2e/file/foo
